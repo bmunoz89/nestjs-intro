@@ -21,18 +21,18 @@ export class Product extends Document {
     required: true,
     trim: true,
   })
-  title: string
+  title!: string
 
   @Prop({
     required: true,
     trim: true,
   })
-  description: string
+  description!: string
 
   @Prop({
     required: true,
   })
-  price: number
+  price!: number
 
   @Prop()
   readonly createdAt?: Date
