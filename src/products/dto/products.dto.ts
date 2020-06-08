@@ -12,24 +12,24 @@ import { Types } from 'mongoose'
 
 export class ProductIdDTO {
   @IsMongoId()
-  readonly id: Types.ObjectId
+  readonly id!: Types.ObjectId
 }
 
 export class ProductBodyDTO {
   @IsString()
   @MinLength(3)
   @MaxLength(100)
-  readonly title: string
+  readonly title!: string
 
   @IsString()
   @MinLength(20)
   @MaxLength(300)
-  readonly description: string
+  readonly description!: string
 
   @IsInt()
   @Min(0)
   @Max(10)
-  readonly price: number
+  readonly price!: number
 }
 
 export class ProductPartialBodyDTO {
