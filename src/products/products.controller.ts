@@ -12,8 +12,6 @@ import {
   Patch,
   Post,
   Put,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common'
 import {
   DeleteQueryResult,
@@ -33,12 +31,6 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  @UsePipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  )
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() productBodyDTO: ProductBodyDTO): Promise<ProductI> {
     this.logger.debug(productBodyDTO)
@@ -52,12 +44,6 @@ export class ProductsController {
   }
 
   @Get(':id')
-  @UsePipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  )
   async getOne(@Param() productIdDTO: ProductIdDTO): Promise<ProductI> {
     this.logger.debug(productIdDTO)
     const product: ProductI | null = await this.productsService.getOne(
@@ -68,12 +54,6 @@ export class ProductsController {
   }
 
   @Put(':id')
-  @UsePipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  )
   @HttpCode(HttpStatus.NO_CONTENT)
   async update(
     @Param() productIdDTO: ProductIdDTO,
@@ -89,12 +69,6 @@ export class ProductsController {
   }
 
   @Patch(':id')
-  @UsePipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  )
   @HttpCode(HttpStatus.NO_CONTENT)
   async partialUpdate(
     @Param() productIdDTO: ProductIdDTO,
@@ -113,12 +87,6 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  @UsePipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  )
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param() productIdDTO: ProductIdDTO): Promise<void> {
     this.logger.debug(productIdDTO)
