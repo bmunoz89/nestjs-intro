@@ -1,6 +1,6 @@
 import {
-  IsDateString,
   IsInt,
+  IsMongoId,
   IsOptional,
   IsString,
   Max,
@@ -8,10 +8,11 @@ import {
   Min,
   MinLength,
 } from 'class-validator'
+import { Types } from 'mongoose'
 
 export class ProductIdDTO {
-  @IsDateString()
-  readonly id: string
+  @IsMongoId()
+  readonly id: Types.ObjectId
 }
 
 export class ProductBodyDTO {

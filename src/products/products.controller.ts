@@ -2,10 +2,12 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Logger,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -14,12 +16,16 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import {
+  DeleteQueryResult,
+  UpdateQueryResult,
+} from 'src/interfaces/mongo.interface'
+import {
   ProductBodyDTO,
   ProductIdDTO,
   ProductPartialBodyDTO,
 } from 'src/products/dto/products.dto'
-import { ProductModel } from 'src/products/products.model'
 import { ProductsService } from 'src/products/products.service'
+import { Product } from './schemas/product.schema'
 
 @Controller('products')
 export class ProductsController {
@@ -34,17 +40,15 @@ export class ProductsController {
     }),
   )
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() productBodyDTO: ProductBodyDTO): ProductIdDTO {
+  async create(@Body() productBodyDTO: ProductBodyDTO): Promise<Product> {
     this.logger.debug(productBodyDTO)
-    const id = this.productsService.insert(productBodyDTO)
-    return {
-      id,
-    }
+    const product = await this.productsService.create(productBodyDTO)
+    return product
   }
 
   @Get()
-  getAll(): ProductModel[] {
-    return this.productsService.all()
+  async getAll(): Promise<Product[]> {
+    return await this.productsService.getAll()
   }
 
   @Get(':id')
@@ -54,9 +58,13 @@ export class ProductsController {
       forbidNonWhitelisted: true,
     }),
   )
-  retrieve(@Param() productIdDTO: ProductIdDTO): ProductModel {
+  async getOne(@Param() productIdDTO: ProductIdDTO): Promise<Product> {
     this.logger.debug(productIdDTO)
-    return this.productsService.get(productIdDTO.id)
+    const product: Product | null = await this.productsService.getOne(
+      productIdDTO.id,
+    )
+    if (product === null) throw new NotFoundException()
+    return product
   }
 
   @Put(':id')
@@ -67,13 +75,17 @@ export class ProductsController {
     }),
   )
   @HttpCode(HttpStatus.NO_CONTENT)
-  getOne(
+  async update(
     @Param() productIdDTO: ProductIdDTO,
     @Body() productBodyDTO: ProductBodyDTO,
-  ): void {
+  ): Promise<void> {
     this.logger.debug(productIdDTO)
     this.logger.debug(productBodyDTO)
-    this.productsService.update(productIdDTO.id, productBodyDTO)
+    const result: UpdateQueryResult = await this.productsService.update(
+      productIdDTO.id,
+      productBodyDTO,
+    )
+    if (result.ok && result.nModified === 0) throw new NotFoundException()
   }
 
   @Patch(':id')
@@ -84,14 +96,35 @@ export class ProductsController {
     }),
   )
   @HttpCode(HttpStatus.NO_CONTENT)
-  partialUpdate(
+  async partialUpdate(
     @Param() productIdDTO: ProductIdDTO,
     @Body() productBodyDTO: ProductPartialBodyDTO,
-  ): void {
+  ): Promise<void> {
     this.logger.debug(productIdDTO)
     this.logger.debug(productBodyDTO)
     if (Object.keys(productBodyDTO).length === 0)
       throw new BadRequestException()
-    this.productsService.updatePartial(productIdDTO.id, productBodyDTO)
+
+    const result: UpdateQueryResult = await this.productsService.updatePartial(
+      productIdDTO.id,
+      productBodyDTO,
+    )
+    if (result.ok && result.nModified === 0) throw new NotFoundException()
+  }
+
+  @Delete(':id')
+  @UsePipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  )
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(@Param() productIdDTO: ProductIdDTO): Promise<void> {
+    this.logger.debug(productIdDTO)
+    const result: DeleteQueryResult = await this.productsService.delete(
+      productIdDTO.id,
+    )
+    if (result.ok && result.deletedCount === 0) throw new NotFoundException()
   }
 }

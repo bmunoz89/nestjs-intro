@@ -1,54 +1,61 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { ProductModel } from 'src/products/products.model'
+import { Injectable } from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import { Model } from 'mongoose'
+import {
+  DeleteQueryResult,
+  UpdateQueryResult,
+} from 'src/interfaces/mongo.interface'
 import {
   ProductBodyDTO,
   ProductIdDTO,
   ProductPartialBodyDTO,
 } from './dto/products.dto'
+import { Product } from './schemas/product.schema'
 
 @Injectable()
 export class ProductsService {
-  products: ProductModel[] = [
-    {
-      id: '2020-05-30T22:50:58.393Z',
-      title: '2123',
-      description: 'Description to be tested',
-      price: 1,
-    },
-  ]
+  constructor(
+    @InjectModel(Product.name) private productModel: Model<Product>,
+  ) {}
 
-  insert(product: ProductBodyDTO): string {
-    const id = new Date().toISOString()
-    const newProduct: ProductModel = new ProductModel(
-      id,
-      product.title,
-      product.description,
-      product.price,
-    )
-    this.products.push(newProduct)
-    return id
-  }
-
-  all(): ProductModel[] {
-    return this.products.reverse()
-  }
-
-  get(id: ProductIdDTO['id']): ProductModel {
-    const product: ProductModel | undefined = this.products.find(
-      product => product.id === id,
-    )
-    if (product === undefined) throw new NotFoundException()
+  async create(productBodyDTO: ProductBodyDTO): Promise<Product> {
+    const product = await this.productModel.create(productBodyDTO)
     return product
   }
 
-  update(id: ProductIdDTO['id'], fieldsToUpdate: ProductBodyDTO): void {
-    Object.assign(this.get(id), fieldsToUpdate)
+  async getAll(): Promise<Product[]> {
+    return await this.productModel.find().sort('-createdAt')
   }
 
-  updatePartial(
+  async getOne(id: ProductIdDTO['id']): Promise<Product | null> {
+    return await this.productModel.findById(id)
+  }
+
+  async update(
+    id: ProductIdDTO['id'],
+    fieldsToUpdate: ProductBodyDTO,
+  ): Promise<UpdateQueryResult> {
+    return await this.productModel.updateOne(
+      {
+        _id: id,
+      },
+      fieldsToUpdate,
+    )
+  }
+
+  async updatePartial(
     id: ProductIdDTO['id'],
     fieldsToUpdate: ProductPartialBodyDTO,
-  ): void {
-    Object.assign(this.get(id), fieldsToUpdate)
+  ): Promise<UpdateQueryResult> {
+    return await this.productModel.updateOne(
+      {
+        _id: id,
+      },
+      fieldsToUpdate,
+    )
+  }
+
+  async delete(id: ProductIdDTO['id']): Promise<DeleteQueryResult> {
+    return await this.productModel.deleteOne({ _id: id })
   }
 }
