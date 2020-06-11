@@ -10,4 +10,5 @@ export default Joi.object({
     .min(0)
     .max(65536)
     .default(3000),
+  APP_LOGGER: Joi.boolean().default(false),
 })
