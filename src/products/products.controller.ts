@@ -6,7 +6,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -27,13 +26,11 @@ import { ProductI } from 'src/products/schemas/product.schema'
 
 @Controller('products')
 export class ProductsController {
-  private readonly logger: Logger = new Logger(ProductsController.name)
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() productBodyDTO: ProductBodyDTO): Promise<ProductI> {
-    this.logger.debug(productBodyDTO)
     const product: ProductI = await this.productsService.create(productBodyDTO)
     return product
   }
@@ -45,7 +42,6 @@ export class ProductsController {
 
   @Get(':id')
   async getOne(@Param() productIdDTO: ProductIdDTO): Promise<ProductI> {
-    this.logger.debug(productIdDTO)
     const product: ProductI | null = await this.productsService.getOne(
       productIdDTO.id,
     )
@@ -59,8 +55,6 @@ export class ProductsController {
     @Param() productIdDTO: ProductIdDTO,
     @Body() productBodyDTO: ProductBodyDTO,
   ): Promise<void> {
-    this.logger.debug(productIdDTO)
-    this.logger.debug(productBodyDTO)
     const result: UpdateQueryResult = await this.productsService.update(
       productIdDTO.id,
       productBodyDTO,
@@ -74,8 +68,6 @@ export class ProductsController {
     @Param() productIdDTO: ProductIdDTO,
     @Body() productBodyDTO: ProductPartialBodyDTO,
   ): Promise<void> {
-    this.logger.debug(productIdDTO)
-    this.logger.debug(productBodyDTO)
     if (Object.keys(productBodyDTO).length === 0)
       throw new BadRequestException()
 
@@ -89,7 +81,6 @@ export class ProductsController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param() productIdDTO: ProductIdDTO): Promise<void> {
-    this.logger.debug(productIdDTO)
     const result: DeleteQueryResult = await this.productsService.delete(
       productIdDTO.id,
     )

@@ -19,4 +19,8 @@ export class AppConfigService extends BaseConfigService {
   get port(): number {
     return this.getNumber('port') as number
   }
+
+  get logger(): boolean {
+    return this.getBoolean('logger') as boolean
+  }
 }
