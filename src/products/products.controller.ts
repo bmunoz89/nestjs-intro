@@ -11,7 +11,9 @@ import {
   Patch,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common'
+import { JWTAuthGuard } from 'src/auth/jwt-auth.guard'
 import {
   DeleteQueryResult,
   UpdateQueryResult,
@@ -28,6 +30,7 @@ import { Product } from './schemas/product.schema'
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @UseGuards(JWTAuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() productBodyDTO: ProductBodyDTO): Promise<Product> {
@@ -35,11 +38,13 @@ export class ProductsController {
     return product
   }
 
+  @UseGuards(JWTAuthGuard)
   @Get()
   async getAll(): Promise<Product[]> {
     return await this.productsService.getAll()
   }
 
+  @UseGuards(JWTAuthGuard)
   @Get(':id')
   async getOne(@Param() productIdDTO: ProductIdDTO): Promise<Product> {
     const product: Product | null = await this.productsService.getOne(
@@ -49,6 +54,7 @@ export class ProductsController {
     return product
   }
 
+  @UseGuards(JWTAuthGuard)
   @Put(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async update(
@@ -62,6 +68,7 @@ export class ProductsController {
     if (result.ok && result.nModified === 0) throw new NotFoundException()
   }
 
+  @UseGuards(JWTAuthGuard)
   @Patch(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async partialUpdate(
@@ -78,6 +85,7 @@ export class ProductsController {
     if (result.ok && result.nModified === 0) throw new NotFoundException()
   }
 
+  @UseGuards(JWTAuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param() productIdDTO: ProductIdDTO): Promise<void> {
