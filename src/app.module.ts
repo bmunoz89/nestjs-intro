@@ -1,11 +1,13 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
+import { AuthModule } from './auth/auth.module'
 import { AppConfigModule } from './config/app/app.config.module'
 import { AppConfigService } from './config/app/app.config.service'
 import { MongoConfigModule } from './config/database/mongo/mongo.config.module'
 import { MongoConfigService } from './config/database/mongo/mongo.config.service'
 import { LoggerMiddleware } from './logger.middleware'
 import { ProductsModule } from './products/products.module'
+import { UsersModule } from './users/users.module'
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { ProductsModule } from './products/products.module'
       inject: [MongoConfigService],
     }),
     ProductsModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
