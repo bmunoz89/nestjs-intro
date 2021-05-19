@@ -1,6 +1,7 @@
 import { Prop, Schema as DSchema, SchemaFactory } from '@nestjs/mongoose'
 import { compare, hash } from 'bcrypt'
 import { Document, HookNextFunction, Schema, Types } from 'mongoose'
+import type { SetOptional } from 'type-fest'
 
 const PASSWORD_SALT = 5
 
@@ -16,7 +17,7 @@ export interface UserI {
   versionKey: false,
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
   toJSON: {
-    transform: (_doc: User, plainObj: UserI) => {
+    transform: (_doc: User, plainObj: SetOptional<UserI, 'password'>) => {
       delete plainObj.password
       return plainObj
     },
@@ -52,18 +53,19 @@ export const UserSchema: Schema<User> = SchemaFactory.createForClass(User)
 
 UserSchema.index({ username: 1, password: 1 })
 
-UserSchema.pre<User>('save', function(next: HookNextFunction) {
-  if (!this.isModified('password')) return next()
+UserSchema.pre<User>(
+  'save',
+  async function (next: HookNextFunction): Promise<void> {
+    if (!this.isModified('password')) {
+      next()
+      return
+    }
 
-  hash(this.password, PASSWORD_SALT, (error, passwordEncrypted) => {
-    if (error) return next(error)
+    this.password = await hash(this.password, PASSWORD_SALT)
+  },
+)
 
-    this.password = passwordEncrypted
-    next()
-  })
-})
-
-UserSchema.methods.comparePassword = function(
+UserSchema.methods.comparePassword = function (
   password: string,
 ): Promise<boolean> {
   return compare(password, this.password)
