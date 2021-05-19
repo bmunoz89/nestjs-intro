@@ -1,5 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
+import { SentryConfigModule } from 'src/config/sentry/sentry.config.module'
 import { AuthModule } from './auth/auth.module'
 import { AppConfigModule } from './config/app/app.config.module'
 import { AppConfigService } from './config/app/app.config.service'
@@ -13,6 +14,7 @@ import { UsersModule } from './users/users.module'
   imports: [
     AppConfigModule,
     MongoConfigModule,
+    SentryConfigModule,
     MongooseModule.forRootAsync({
       imports: [MongoConfigModule],
       useFactory: (mongoConfigService: MongoConfigService) => ({
