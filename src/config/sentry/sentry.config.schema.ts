@@ -18,4 +18,5 @@ export default Joi.object({
   SENTRY_LOG_LEVEL: Joi.number()
     .integer()
     .allow(...logLevels),
+  SENTRY_SAMPLE_RATE: Joi.number().integer().default(30),
 })

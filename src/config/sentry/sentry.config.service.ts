@@ -24,4 +24,8 @@ export class SentryConfigService extends BaseConfigService {
   get logLevel(): LogLevel | undefined {
     return this.getNumber('logLevel')
   }
+
+  get sampleRate(): number {
+    return this.getNumber('sampleRate') as number
+  }
 }
