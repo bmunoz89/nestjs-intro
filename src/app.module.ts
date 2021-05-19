@@ -30,7 +30,7 @@ import { UsersModule } from './users/users.module'
 export class AppModule implements NestModule {
   constructor(private readonly appConfigService: AppConfigService) {}
 
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     if (this.appConfigService.logger)
       consumer.apply(LoggerMiddleware).forRoutes('/')
   }

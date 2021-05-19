@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { set as mongooseSet } from 'mongoose'
@@ -36,4 +38,5 @@ async function bootstrap() {
     module.hot.dispose(() => app.close())
   }
 }
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 bootstrap()

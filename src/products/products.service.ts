@@ -20,14 +20,11 @@ export class ProductsService {
 
   async create(productBodyDTO: ProductBodyDTO): Promise<ProductI> {
     const product = await this.productModel.create(productBodyDTO)
-    return product.toJSON()
+    return product.toJSON<ProductI>()
   }
 
   async getAll(): Promise<ProductI[]> {
-    return await this.productModel
-      .find()
-      .sort('-createdAt')
-      .lean()
+    return await this.productModel.find().sort('-createdAt').lean()
   }
 
   async getOne(id: ProductIdDTO['id']): Promise<ProductI | null> {

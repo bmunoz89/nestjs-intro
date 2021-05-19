@@ -41,6 +41,5 @@ export class Product extends Document {
   readonly updatedAt?: Date
 }
 
-export const ProductSchema: Schema<Product> = SchemaFactory.createForClass(
-  Product,
-)
+export const ProductSchema: Schema<Product> =
+  SchemaFactory.createForClass(Product)
