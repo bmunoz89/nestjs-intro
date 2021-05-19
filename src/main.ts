@@ -3,6 +3,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { set as mongooseSet } from 'mongoose'
+import { SentryInterceptor } from 'src/sentry/sentry.interceptor'
 import { AppModule } from './app.module'
 import { AppConfigService } from './config/app/app.config.service'
 import { MongoConfigService } from './config/database/mongo/mongo.config.service'
@@ -19,6 +20,8 @@ async function bootstrap() {
   mongooseSet('useFindAndModify', false)
   mongooseSet('useCreateIndex', true)
   mongooseSet('useUnifiedTopology', true)
+
+  app.useGlobalInterceptors(new SentryInterceptor())
 
   app.setGlobalPrefix(appConfigService.prefix)
   app.useGlobalPipes(

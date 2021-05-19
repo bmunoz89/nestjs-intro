@@ -8,6 +8,7 @@ import { MongoConfigModule } from './config/database/mongo/mongo.config.module'
 import { MongoConfigService } from './config/database/mongo/mongo.config.service'
 import { LoggerMiddleware } from './logger.middleware'
 import { ProductsModule } from './products/products.module'
+import { SentryModule } from './sentry/sentry.module'
 import { UsersModule } from './users/users.module'
 
 @Module({
@@ -25,6 +26,7 @@ import { UsersModule } from './users/users.module'
     ProductsModule,
     UsersModule,
     AuthModule,
+    SentryModule,
   ],
   controllers: [],
   providers: [],
