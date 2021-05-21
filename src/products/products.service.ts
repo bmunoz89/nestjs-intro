@@ -9,8 +9,8 @@ import {
   ProductBodyDTO,
   ProductIdDTO,
   ProductPartialBodyDTO,
-} from './dto/products.dto'
-import { Product, ProductI } from './schemas/product.schema'
+} from 'src/products/dto/products.dto'
+import { Product, ProductI } from 'src/products/schemas/product.schema'
 
 @Injectable()
 export class ProductsService {

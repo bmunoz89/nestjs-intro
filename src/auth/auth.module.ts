@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
+import { AuthController } from 'src/auth/auth.controller'
+import { AuthService } from 'src/auth/auth.service'
+import { JWTStrategy } from 'src/auth/jwt.strategy'
 import { AuthConfigModule } from 'src/config/auth/auth.config.module'
 import { AuthConfigService } from 'src/config/auth/auth.config.service'
 import { UsersModule } from 'src/users/users.module'
-import { AuthController } from './auth.controller'
-import { AuthService } from './auth.service'
-import { JWTStrategy } from './jwt.strategy'
 
 @Module({
   controllers: [AuthController],

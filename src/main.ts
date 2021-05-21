@@ -3,10 +3,10 @@
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { set as mongooseSet } from 'mongoose'
+import { AppModule } from 'src/app.module'
+import { AppConfigService } from 'src/config/app/app.config.service'
+import { MongoConfigService } from 'src/config/database/mongo/mongo.config.service'
 import { SentryInterceptor } from 'src/sentry/sentry.interceptor'
-import { AppModule } from './app.module'
-import { AppConfigService } from './config/app/app.config.service'
-import { MongoConfigService } from './config/database/mongo/mongo.config.service'
 declare const module: any
 
 async function bootstrap() {

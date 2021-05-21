@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common'
-import { JWTRequest } from './auth/dto/auth.dto'
-import { User } from './users/schemas/user.schema'
+import { JWTRequest } from 'src/auth/dto/auth.dto'
+import { User } from 'src/users/schemas/user.schema'
 
 export const CurrentUser = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext): User => {

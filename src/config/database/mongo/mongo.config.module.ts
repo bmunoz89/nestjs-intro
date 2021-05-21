@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ConfigModuleOptions } from '@nestjs/config/dist/interfaces'
-import appConfig from './mongo.config'
-import mongoConfigSchema from './mongo.config.schema'
-import { MongoConfigService } from './mongo.config.service'
+import appConfig from 'src/config/database/mongo/mongo.config'
+import mongoConfigSchema from 'src/config/database/mongo/mongo.config.schema'
+import { MongoConfigService } from 'src/config/database/mongo/mongo.config.service'
 
 @Module({
   imports: [
