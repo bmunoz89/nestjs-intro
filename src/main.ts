@@ -9,6 +9,8 @@ import { MongoConfigService } from 'src/config/database/mongo/mongo.config.servi
 import { SentryInterceptor } from 'src/sentry/sentry.interceptor'
 declare const module: any
 
+const isVite = process.env['VITE_USER_NODE_ENV'] === 'development'
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   const appConfigService = app.get(AppConfigService)
@@ -24,12 +26,16 @@ async function bootstrap() {
   app.useGlobalInterceptors(new SentryInterceptor())
 
   app.setGlobalPrefix(appConfigService.prefix)
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  )
+
+  if (isVite === false)
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+      }),
+    )
+
+  if (isVite) return app
 
   const port = appConfigService.port
   await app.listen(port)
@@ -40,6 +46,8 @@ async function bootstrap() {
     module.hot.accept()
     module.hot.dispose(() => app.close())
   }
+
+  return app
 }
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-bootstrap()
+
+export const createViteNodeApp = bootstrap()
