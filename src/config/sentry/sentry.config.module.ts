@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config'
 import { ConfigModuleOptions } from '@nestjs/config/dist/interfaces'
 import appConfig from 'src/config/sentry/sentry.config'
 import sentryConfigSchema from 'src/config/sentry/sentry.config.schema'
@@ -18,7 +18,7 @@ import { SentryConfigService } from 'src/config/sentry/sentry.config.service'
       },
     } as ConfigModuleOptions),
   ],
-  providers: [ConfigService, SentryConfigService],
-  exports: [ConfigService, SentryConfigService],
+  providers: [SentryConfigService],
+  exports: [SentryConfigService],
 })
 export class SentryConfigModule {}

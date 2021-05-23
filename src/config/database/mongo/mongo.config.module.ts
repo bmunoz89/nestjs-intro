@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config'
 import { ConfigModuleOptions } from '@nestjs/config/dist/interfaces'
 import appConfig from 'src/config/database/mongo/mongo.config'
 import mongoConfigSchema from 'src/config/database/mongo/mongo.config.schema'
@@ -18,7 +18,7 @@ import { MongoConfigService } from 'src/config/database/mongo/mongo.config.servi
       },
     } as ConfigModuleOptions),
   ],
-  providers: [ConfigService, MongoConfigService],
-  exports: [ConfigService, MongoConfigService],
+  providers: [MongoConfigService],
+  exports: [MongoConfigService],
 })
 export class MongoConfigModule {}

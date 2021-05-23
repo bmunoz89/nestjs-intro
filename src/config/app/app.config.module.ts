@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config'
 import { ConfigModuleOptions } from '@nestjs/config/dist/interfaces'
 import appConfig from 'src/config/app/app.config'
 import appConfigSchema from 'src/config/app/app.config.schema'
@@ -18,7 +18,7 @@ import { AppConfigService } from 'src/config/app/app.config.service'
       },
     } as ConfigModuleOptions),
   ],
-  providers: [ConfigService, AppConfigService],
-  exports: [ConfigService, AppConfigService],
+  providers: [AppConfigService],
+  exports: [AppConfigService],
 })
 export class AppConfigModule {}

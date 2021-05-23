@@ -5,7 +5,6 @@ import { AppConfigModule } from 'src/config/app/app.config.module'
 import { AppConfigService } from 'src/config/app/app.config.service'
 import { MongoConfigModule } from 'src/config/database/mongo/mongo.config.module'
 import { MongoConfigService } from 'src/config/database/mongo/mongo.config.service'
-import { SentryConfigModule } from 'src/config/sentry/sentry.config.module'
 import { LoggerMiddleware } from 'src/logger.middleware'
 import { ProductsModule } from 'src/products/products.module'
 import { SentryModule } from 'src/sentry/sentry.module'
@@ -14,8 +13,6 @@ import { UsersModule } from 'src/users/users.module'
 @Module({
   imports: [
     AppConfigModule,
-    MongoConfigModule,
-    SentryConfigModule,
     MongooseModule.forRootAsync({
       imports: [MongoConfigModule],
       useFactory: (mongoConfigService: MongoConfigService) => ({
