@@ -12,6 +12,10 @@ export class MongoConfigService extends BaseConfigService {
     return this.getBoolean('debug') as boolean
   }
 
+  get autoIndex(): boolean {
+    return this.getBoolean('autoIndex') as boolean
+  }
+
   get uri(): string {
     return this.getString('uri') as string
   }

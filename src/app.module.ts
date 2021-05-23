@@ -17,6 +17,7 @@ import { UsersModule } from 'src/users/users.module'
       imports: [MongoConfigModule],
       useFactory: (mongoConfigService: MongoConfigService) => ({
         uri: mongoConfigService.uri,
+        autoIndex: mongoConfigService.autoIndex,
       }),
       inject: [MongoConfigService],
     }),
