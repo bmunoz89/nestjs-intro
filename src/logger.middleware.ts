@@ -1,4 +1,5 @@
 import { HttpStatus, Injectable, Logger, NestMiddleware } from '@nestjs/common'
+import { id as rTracerId } from 'cls-rtracer'
 import { Request, Response } from 'express'
 
 @Injectable()
@@ -15,8 +16,10 @@ export class LoggerMiddleware implements NestMiddleware {
     const body = JSON.stringify(req.body)
     const protocol = `${req.protocol.toUpperCase()}/${req.httpVersion}`
     const elapsed = `${Date.now() - requestStart}ms`
+    const requestId = `[request-id:${rTracerId() as string}]`
 
     const message = [
+      requestId,
       req.method,
       req.originalUrl,
       body,

@@ -2,6 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
+import { NestExpressApplication } from '@nestjs/platform-express'
+import { expressMiddleware as rTracerExpressMiddleware } from 'cls-rtracer'
 import { set as mongooseSet } from 'mongoose'
 import { AppModule } from 'src/app.module'
 import { AppConfigService } from 'src/config/app/app.config.service'
@@ -12,7 +14,7 @@ declare const module: any
 const isVite = process.env['VITE_USER_NODE_ENV'] === 'development'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create<NestExpressApplication>(AppModule)
   const appConfigService = app.get(AppConfigService)
   const mongoConfigService = app.get(MongoConfigService)
 
@@ -34,6 +36,16 @@ async function bootstrap() {
         forbidNonWhitelisted: true,
       }),
     )
+
+  app.use(
+    rTracerExpressMiddleware({
+      echoHeader: true,
+      useHeader: true,
+      headerName: 'X-Request-Id',
+    }),
+  )
+
+  app.disable('x-powered-by')
 
   if (isVite) return app
 

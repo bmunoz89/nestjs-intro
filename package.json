@@ -36,6 +36,7 @@
     "bcrypt": "^5.0.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
+    "cls-rtracer": "^2.6.0",
     "mongoose": "^5.9.18",
     "ms": "^2.1.2",
     "passport": "^0.4.1",
