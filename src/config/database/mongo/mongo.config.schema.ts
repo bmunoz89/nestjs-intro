@@ -1,4 +1,4 @@
-import * as Joi from '@hapi/joi'
+import Joi from '@hapi/joi'
 
 export default Joi.object({
   DATABASE_MONGO_DEBUG: Joi.boolean().default(false),
