@@ -47,7 +47,9 @@ export class BaseConfigService<configFactory extends ConfigFactory> {
     return this.getValue(key)
   }
 
-  protected getString(key: keyof ReturnType<configFactory>): string {
-    return this.getStringOrUndefined(key) as string
+  protected getString<R extends string>(
+    key: keyof ReturnType<configFactory>,
+  ): R {
+    return this.getStringOrUndefined(key) as R
   }
 }

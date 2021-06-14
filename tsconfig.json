@@ -19,7 +19,15 @@
     "noUnusedParameters": true,
     "esModuleInterop": true,
     "suppressImplicitAnyIndexErrors": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@libs/winston-logger": [
+        "libs/winston-logger/src"
+      ],
+      "@libs/winston-logger/*": [
+        "libs/winston-logger/src/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules",

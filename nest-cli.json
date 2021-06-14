@@ -1,4 +1,18 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "projects": {
+    "winston-logger": {
+      "type": "library",
+      "root": "libs/winston-logger",
+      "entryFile": "index",
+      "sourceRoot": "libs/winston-logger/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/winston-logger/tsconfig.lib.json"
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
 }

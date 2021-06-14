@@ -31,13 +31,13 @@ export class SentryModule implements OnModuleInit, OnModuleDestroy {
         if (this.sentryConfigService.enabled || hint === undefined) return event
 
         if (hint.originalException instanceof Error)
-          this.logger.error(
-            hint.originalException.message,
-            hint.originalException.stack,
-          )
+          this.logger.error(hint.originalException, 'sentry')
+        else if ((hint.originalException as unknown) instanceof Promise)
+          this.logger.error('Unhandled rejection', 'sentry')
         else
           this.logger.error(
             hint.originalException || hint.syntheticException || event,
+            'sentry',
           )
 
         return null

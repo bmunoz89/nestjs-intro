@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import appConfig from 'src/config/app/app.config'
+import { Environment } from 'src/config/app/app.config.schema'
 import { BaseConfigService } from 'src/config/config.service'
 
 @Injectable()
@@ -9,7 +10,7 @@ export class AppConfigService extends BaseConfigService<typeof appConfig> {
     super('app', configService)
   }
 
-  get nodeEnv(): string {
+  get nodeEnv(): Environment {
     return this.getString('nodeEnv')
   }
 
@@ -23,5 +24,9 @@ export class AppConfigService extends BaseConfigService<typeof appConfig> {
 
   get logger(): boolean {
     return this.getBoolean('logger')
+  }
+
+  get loggerColor(): boolean {
+    return this.getBoolean('loggerColor')
   }
 }

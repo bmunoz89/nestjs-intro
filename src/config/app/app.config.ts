@@ -5,4 +5,5 @@ export default registerAs('app', () => ({
   prefix: process.env['APP_PREFIX'],
   port: process.env['APP_PORT'],
   logger: process.env['APP_LOGGER'],
+  loggerColor: process.env['APP_LOGGER_COLOR'],
 }))

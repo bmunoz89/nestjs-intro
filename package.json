@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:dev:vite": "vite-node",
@@ -34,16 +34,20 @@
     "@nestjs/platform-express": "^7.0.0",
     "@sentry/node": "^5.19.2",
     "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "chalk": "^4.1.1",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
-    "cls-rtracer": "^2.6.0",
     "mongoose": "^5.9.18",
+    "morgan": "^1.10.0",
     "ms": "^2.1.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.5.4"
+    "rxjs": "^6.5.4",
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.11",
@@ -56,11 +60,13 @@
     "@types/hapi__joi": "^17.1.2",
     "@types/jest": "25.1.4",
     "@types/mongoose": "^5.7.22",
+    "@types/morgan": "^1.9.2",
     "@types/ms": "^0.7.31",
     "@types/node": "^13.9.1",
     "@types/passport": "^1.0.3",
     "@types/passport-jwt": "^3.0.3",
     "@types/supertest": "^2.0.8",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
     "eslint": "^7.12.1",
@@ -96,6 +102,14 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "@app/winston-logger/(.*)": "<rootDir>/libs/winston-logger/src/$1",
+      "@app/winston-logger": "<rootDir>/libs/winston-logger/src"
+    }
   }
 }
