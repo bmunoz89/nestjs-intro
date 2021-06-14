@@ -8,11 +8,10 @@ import {
   Min,
   MinLength,
 } from 'class-validator'
-import { Types } from 'mongoose'
 
 export class ProductIdDTO {
   @IsMongoId()
-  readonly id!: Types.ObjectId
+  readonly id!: string
 }
 
 export class ProductBodyDTO {
