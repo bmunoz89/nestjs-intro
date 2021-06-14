@@ -100,8 +100,6 @@ async function bootstrap() {
   mongooseSet('useCreateIndex', true)
   mongooseSet('useUnifiedTopology', true)
 
-  app.useGlobalInterceptors(new SentryInterceptor())
-
   app.setGlobalPrefix(appConfigService.prefix)
 
   if (isVite === false)
