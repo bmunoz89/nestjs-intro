@@ -10,22 +10,37 @@ export class AppConfigService extends BaseConfigService<typeof appConfig> {
     super('app', configService)
   }
 
+  /**
+   * @default 'development'
+   */
   get nodeEnv(): Environment {
     return this.getString('nodeEnv')
   }
 
+  /**
+   * @default 'api'
+   */
   get prefix(): string {
     return this.getString('prefix')
   }
 
+  /**
+   * @default 3000
+   */
   get port(): number {
     return this.getNumber('port')
   }
 
+  /**
+   * @default false
+   */
   get logger(): boolean {
     return this.getBoolean('logger')
   }
 
+  /**
+   * @default false
+   */
   get loggerColor(): boolean {
     return this.getBoolean('loggerColor')
   }

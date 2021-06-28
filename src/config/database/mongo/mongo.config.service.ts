@@ -9,10 +9,16 @@ export class MongoConfigService extends BaseConfigService<typeof mongoConfig> {
     super('database.mongo', configService)
   }
 
+  /**
+   * @default false
+   */
   get debug(): boolean {
     return this.getBoolean('debug')
   }
 
+  /**
+   * @default false
+   */
   get autoIndex(): boolean {
     return this.getBoolean('autoIndex')
   }

@@ -12,10 +12,16 @@ export class SentryConfigService extends BaseConfigService<
     super('sentry', configService)
   }
 
+  /**
+   * @default false
+   */
   get enabled(): boolean {
     return this.getBoolean('enabled')
   }
 
+  /**
+   * @default false
+   */
   get debug(): boolean {
     return this.getBoolean('debug')
   }
@@ -28,6 +34,9 @@ export class SentryConfigService extends BaseConfigService<
     return this.getNumberOrUndefined('logLevel')
   }
 
+  /**
+   * @default 30
+   */
   get sampleRate(): number {
     return this.getNumber('sampleRate')
   }

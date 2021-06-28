@@ -9,10 +9,16 @@ export class AuthConfigService extends BaseConfigService<typeof authConfig> {
     super('auth', configService)
   }
 
+  /**
+   * @default 'secret_key'
+   */
   get jwtSecret(): string {
     return this.getString('jwtSecret')
   }
 
+  /**
+   * @default '12h'
+   */
   get jwtSignExpiresIn(): string {
     return this.getString('jwtSignExpiresIn')
   }
