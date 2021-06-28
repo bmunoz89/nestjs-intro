@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "postinstall": "husky install",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
@@ -73,7 +74,9 @@
     "eslint": "^7.12.1",
     "eslint-config-prettier": "7.0.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^6.0.0",
     "jest": "*",
+    "lint-staged": "^11.0.0",
     "prettier": "^2.1.2",
     "prettier-plugin-organize-imports": "^2.0.0",
     "run-script-webpack-plugin": "^0.0.11",
@@ -113,5 +116,13 @@
       "@app/winston-logger/(.*)": "<rootDir>/libs/winston-logger/src/$1",
       "@app/winston-logger": "<rootDir>/libs/winston-logger/src"
     }
+  },
+  "lint-staged": {
+    "*.{js,json,jsonc}": [
+      "prettier --write"
+    ],
+    "*.ts": [
+      "eslint --fix"
+    ]
   }
 }
