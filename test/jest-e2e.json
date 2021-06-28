@@ -1,9 +1,21 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": "../",
+  "modulePaths": ["<rootDir>"],
   "testEnvironment": "node",
+  "roots": [
+    "<rootDir>"
+  ],
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app/winston-logger/(.*)": "<rootDir>/../libs/winston-logger/src/$1",
+    "@app/winston-logger": "<rootDir>/../libs/winston-logger/src"
   }
 }
