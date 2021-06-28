@@ -10,7 +10,8 @@ import {
   ProductIdDTO,
   ProductPartialBodyDTO,
 } from 'src/products/dto/products.dto'
-import { Product, ProductI } from 'src/products/schemas/product.schema'
+import { ProductLean } from 'src/products/interfaces/product-lean.interface'
+import { Product } from 'src/products/schemas/product.schema'
 
 @Injectable()
 export class ProductsService {
@@ -18,16 +19,16 @@ export class ProductsService {
     @InjectModel(Product.name) private readonly productModel: Model<Product>,
   ) {}
 
-  async create(productBodyDTO: ProductBodyDTO): Promise<ProductI> {
+  async create(productBodyDTO: ProductBodyDTO): Promise<ProductLean> {
     const product = await this.productModel.create(productBodyDTO)
-    return product.toJSON<ProductI>()
+    return product.toJSON<ProductLean>()
   }
 
-  async getAll(): Promise<ProductI[]> {
+  async getAll(): Promise<ProductLean[]> {
     return await this.productModel.find().sort('-createdAt').lean()
   }
 
-  async getOne(id: ProductIdDTO['id']): Promise<ProductI | null> {
+  async getOne(id: ProductIdDTO['id']): Promise<ProductLean | null> {
     return await this.productModel.findById(id).lean()
   }
 

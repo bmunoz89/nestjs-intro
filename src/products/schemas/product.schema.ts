@@ -1,18 +1,9 @@
 import { Prop, Schema as DSchema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Schema, Types } from 'mongoose'
 
-export interface ProductI {
-  _id: string
-  title: string
-  description: string
-  price: number
-  created_at: Date
-  updated_at: Date
-}
-
 @DSchema({
   versionKey: false,
-  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+  timestamps: { createdAt: true, updatedAt: true },
 })
 export class Product extends Document {
   _id!: Types.ObjectId

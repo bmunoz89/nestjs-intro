@@ -23,8 +23,8 @@ import {
   ProductIdDTO,
   ProductPartialBodyDTO,
 } from 'src/products/dto/products.dto'
+import { ProductLean } from 'src/products/interfaces/product-lean.interface'
 import { ProductsService } from 'src/products/products.service'
-import { ProductI } from 'src/products/schemas/product.schema'
 
 @Controller('products')
 export class ProductsController {
@@ -33,21 +33,23 @@ export class ProductsController {
   @UseGuards(JWTAuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() productBodyDTO: ProductBodyDTO): Promise<ProductI> {
-    const product: ProductI = await this.productsService.create(productBodyDTO)
+  async create(@Body() productBodyDTO: ProductBodyDTO): Promise<ProductLean> {
+    const product: ProductLean = await this.productsService.create(
+      productBodyDTO,
+    )
     return product
   }
 
   @UseGuards(JWTAuthGuard)
   @Get()
-  async getAll(): Promise<ProductI[]> {
+  async getAll(): Promise<ProductLean[]> {
     return await this.productsService.getAll()
   }
 
   @UseGuards(JWTAuthGuard)
   @Get(':id')
-  async getOne(@Param() productIdDTO: ProductIdDTO): Promise<ProductI> {
-    const product: ProductI | null = await this.productsService.getOne(
+  async getOne(@Param() productIdDTO: ProductIdDTO): Promise<ProductLean> {
+    const product: ProductLean | null = await this.productsService.getOne(
       productIdDTO.id,
     )
     if (product === null) throw new NotFoundException()
