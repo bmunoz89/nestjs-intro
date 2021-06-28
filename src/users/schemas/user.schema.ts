@@ -1,23 +1,26 @@
 import { Prop, Schema as DSchema, SchemaFactory } from '@nestjs/mongoose'
 import { compare, hash } from 'bcrypt'
-import { Document, HookNextFunction, Schema, Types } from 'mongoose'
+import {
+  Document,
+  HookNextFunction,
+  model,
+  Model,
+  Schema,
+  Types,
+} from 'mongoose'
+import type { UserPrimitive } from 'src/users/interfaces/user-primitive.interface'
 import type { SetOptional } from 'type-fest'
 
 const PASSWORD_SALT = 5
 
-export interface UserI {
-  _id: string
-  username: string
-  password: string
-  readonly created_at?: Date
-  readonly updated_at?: Date
-}
-
 @DSchema({
   versionKey: false,
-  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+  timestamps: { createdAt: true, updatedAt: true },
   toJSON: {
-    transform: (_doc: User, plainObj: SetOptional<UserI, 'password'>) => {
+    transform: (
+      _doc: User,
+      plainObj: SetOptional<UserPrimitive, 'password'>,
+    ) => {
       delete plainObj.password
       return plainObj
     },
@@ -41,10 +44,10 @@ export class User extends Document {
   password!: string
 
   @Prop()
-  readonly createdAt?: Date
+  createdAt!: Date
 
   @Prop()
-  readonly updatedAt?: Date
+  updatedAt!: Date
 
   public comparePassword!: (password: string) => Promise<boolean>
 }
@@ -70,3 +73,11 @@ UserSchema.methods.comparePassword = function (
 ): Promise<boolean> {
   return compare(password, this.password)
 }
+
+export const UserSchemaModel = model<User, Model<User>>(
+  User.name,
+  UserSchema,
+  User.name,
+)
+
+export type UserModel = Model<User>

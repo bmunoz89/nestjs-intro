@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { AuthPayloadDTO } from 'src/auth/dto/auth.dto'
-import { User } from 'src/users/schemas/user.schema'
+import { UserNoPassword } from 'src/users/interfaces/user-no-password.interface'
 import { UsersService } from 'src/users/users.service'
 
 @Injectable()
@@ -15,7 +15,9 @@ export class AuthService {
     return this.jwtService.sign(authPayloadDTO)
   }
 
-  async validateUser(authPayloadDTO: AuthPayloadDTO): Promise<User | null> {
+  async validateUser(
+    authPayloadDTO: AuthPayloadDTO,
+  ): Promise<UserNoPassword | null> {
     return await this.usersService.findPayload(authPayloadDTO)
   }
 }

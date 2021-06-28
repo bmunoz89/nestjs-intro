@@ -8,7 +8,8 @@ import {
 } from '@nestjs/common'
 import { AuthService } from 'src/auth/auth.service'
 import { AuthLoginBodyDTO, AuthRegisterBodyDTO } from 'src/auth/dto/auth.dto'
-import { User } from 'src/users/schemas/user.schema'
+import { SuccessAuthResponse } from 'src/auth/interfaces/auth-response.interface'
+import { UserNoPassword } from 'src/users/interfaces/user-no-password.interface'
 import { UsersService } from 'src/users/users.service'
 
 @Controller('auth')
@@ -22,8 +23,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(
     @Body() authLoginBodyDTO: AuthLoginBodyDTO,
-  ): Promise<{ user: User; accessToken: string }> {
-    const user: User | null = await this.usersService.login(
+  ): Promise<SuccessAuthResponse> {
+    const user: UserNoPassword | null = await this.usersService.login(
       authLoginBodyDTO.username,
     )
     if (user === null) throw new UnauthorizedException()
@@ -47,8 +48,10 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async register(
     @Body() authRegisterBodyDTO: AuthRegisterBodyDTO,
-  ): Promise<{ user: User; accessToken: string }> {
-    const user: User = await this.usersService.register(authRegisterBodyDTO)
+  ): Promise<SuccessAuthResponse> {
+    const user: UserNoPassword = await this.usersService.register(
+      authRegisterBodyDTO,
+    )
     const accessToken: string = this.authService.signPayload({
       _id: user._id.toHexString(),
       username: user.username,

@@ -1,6 +1,7 @@
-import { IsAlphanumeric, IsString, MaxLength, MinLength } from 'class-validator'
+import { IsString, MaxLength, MinLength } from 'class-validator'
 import { Request } from 'express'
-import { User, UserI } from 'src/users/schemas/user.schema'
+import { UserNoPassword } from 'src/users/interfaces/user-no-password.interface'
+import { UserPrimitive } from 'src/users/interfaces/user-primitive.interface'
 
 export class AuthRegisterBodyDTO {
   @IsString()
@@ -8,14 +9,14 @@ export class AuthRegisterBodyDTO {
   @MaxLength(50)
   readonly username!: string
 
-  @IsAlphanumeric()
+  @IsString()
   @MinLength(8)
   readonly password!: string
 }
 
 export class AuthLoginBodyDTO extends AuthRegisterBodyDTO {}
 
-export type AuthPayloadDTO = Pick<UserI, '_id' | 'username'>
+export type AuthPayloadDTO = Pick<UserPrimitive, '_id' | 'username'>
 
 export interface AuthJWTPayload {
   _id: string
@@ -25,5 +26,5 @@ export interface AuthJWTPayload {
 }
 
 export interface JWTRequest extends Request {
-  user: User
+  user: UserNoPassword
 }
