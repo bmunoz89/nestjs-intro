@@ -41,49 +41,48 @@ async function bootstrap() {
     ConsoleTransportInstance | FileTransportInstance
   > = []
 
-  if (appConfigService.logger) {
-    if (appConfigService.loggerColor) {
-      winstonTransports.push(
-        new transports.File({
-          format: format.combine(format.uncolorize(), format.json()),
-          filename: 'logs/combined.log',
-        }),
-      )
+  if (appConfigService.loggerColor) {
+    winstonTransports.push(
+      new transports.File({
+        format: format.combine(format.uncolorize(), format.json()),
+        filename: 'logs/combined.log',
+      }),
+    )
 
+    winstonTransports.push(
+      new transports.Console({
+        format: format.combine(
+          format.errors({ stack: true }),
+          format.colorize({ all: true }),
+          format.timestamp({ format: 'isoDateTime' }),
+          format.simple(),
+        ),
+        level: 'debug',
+      }),
+    )
+  } else {
+    winstonTransports.push(
+      new transports.File({
+        format: format.json(),
+        filename: 'logs/combined.log',
+      }),
+    )
+
+    if (appConfigService.nodeEnv !== Environment.production)
       winstonTransports.push(
         new transports.Console({
           format: format.combine(
             format.errors({ stack: true }),
-            format.colorize({ all: true }),
             format.timestamp({ format: 'isoDateTime' }),
             format.simple(),
           ),
-          level: 'debug',
+          level: 'info',
         }),
       )
-    } else {
-      winstonTransports.push(
-        new transports.File({
-          format: format.json(),
-          filename: 'logs/combined.log',
-        }),
-      )
-
-      if (appConfigService.nodeEnv !== Environment.production)
-        winstonTransports.push(
-          new transports.Console({
-            format: format.combine(
-              format.errors({ stack: true }),
-              format.timestamp({ format: 'isoDateTime' }),
-              format.simple(),
-            ),
-            level: 'info',
-          }),
-        )
-    }
   }
 
   const globalLogger = new WinstonLoggerService({
+    silent: appConfigService.logger === false,
     transports: winstonTransports,
   })
 
