@@ -25,7 +25,7 @@ export class SentryModule implements OnModuleInit, OnModuleDestroy {
       dsn: this.sentryConfigService.dsn,
       logLevel: this.sentryConfigService.logLevel,
       sampleRate: this.sentryConfigService.sampleRate,
-      maxBreadcrumbs: 30,
+      maxBreadcrumbs: this.sentryConfigService.maxBreadcrumbs,
       attachStacktrace: true,
       beforeSend: (event, hint) => {
         if (this.sentryConfigService.enabled || hint === undefined) return event

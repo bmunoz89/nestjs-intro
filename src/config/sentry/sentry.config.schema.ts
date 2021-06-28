@@ -17,6 +17,8 @@ export default Joi.object({
   SENTRY_DSN: Joi.string().uri().required(),
   SENTRY_LOG_LEVEL: Joi.number()
     .integer()
-    .allow(...logLevels),
-  SENTRY_SAMPLE_RATE: Joi.number().integer().default(30),
+    .allow(...logLevels)
+    .default(LogLevel.Error),
+  SENTRY_SAMPLE_RATE: Joi.number().min(0).max(1).default(1),
+  SENTRY_MAX_BREADCRUMBS: Joi.number().integer().min(1).max(100).default(100),
 })

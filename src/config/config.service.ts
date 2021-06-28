@@ -41,6 +41,21 @@ export class BaseConfigService<configFactory extends ConfigFactory> {
     return this.getNumberOrUndefined(key) as number
   }
 
+  protected getFloatOrUndefined(
+    key: keyof ReturnType<configFactory>,
+  ): number | undefined {
+    const value = this.getValue(key)
+    if (value === undefined) return
+
+    if (typeof value === 'number') return value
+
+    return Number.parseFloat(value)
+  }
+
+  protected getFloat(key: keyof ReturnType<configFactory>): number {
+    return this.getFloatOrUndefined(key) as number
+  }
+
   protected getStringOrUndefined(
     key: keyof ReturnType<configFactory>,
   ): string | undefined {

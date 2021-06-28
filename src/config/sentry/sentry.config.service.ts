@@ -35,9 +35,16 @@ export class SentryConfigService extends BaseConfigService<
   }
 
   /**
-   * @default 30
+   * @default 1
    */
   get sampleRate(): number {
+    return this.getFloat('sampleRate')
+  }
+
+  /**
+   * @default 100
+   */
+  get maxBreadcrumbs(): number {
     return this.getNumber('sampleRate')
   }
 }
