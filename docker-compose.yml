@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.8'
 services:
   mongo:
     image: mongo:latest
@@ -6,12 +6,15 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     volumes:
-      - ./mongo/datadir:/data/db
+      - type: bind
+        source: ./docker/mongo/data/
+        target: /data/db
+        read_only: false
     ports:
-      - "27018:27017"
+      - target: 27017
+        published: 27018
     networks:
       - api
-    restart: always
 
 networks:
   api:

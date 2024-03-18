@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
-import {
-  DeleteQueryResult,
-  UpdateQueryResult,
-} from 'src/interfaces/mongo.interface'
+import { Model, UpdateWriteOpResult } from 'mongoose'
+import { DeleteQueryResult } from 'src/interfaces/mongo.interface'
 import {
   ProductBodyDTO,
   ProductIdDTO,
@@ -35,7 +32,7 @@ export class ProductsService {
   async update(
     id: ProductIdDTO['id'],
     fieldsToUpdate: ProductBodyDTO,
-  ): Promise<UpdateQueryResult> {
+  ): Promise<UpdateWriteOpResult> {
     return await this.productModel.updateOne(
       {
         _id: id,
@@ -47,7 +44,7 @@ export class ProductsService {
   async updatePartial(
     id: ProductIdDTO['id'],
     fieldsToUpdate: ProductPartialBodyDTO,
-  ): Promise<UpdateQueryResult> {
+  ): Promise<UpdateWriteOpResult> {
     return await this.productModel.updateOne(
       {
         _id: id,

@@ -1,3 +1,4 @@
+import { WinstonLoggerModule } from '@libs/winston-logger/winston-logger.module'
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 import { AuthModule } from 'src/auth/auth.module'
@@ -17,10 +18,11 @@ import { UsersModule } from 'src/users/users.module'
       }),
       inject: [MongoConfigService],
     }),
+    SentryModule,
+    WinstonLoggerModule,
+    AuthModule,
     ProductsModule,
     UsersModule,
-    AuthModule,
-    SentryModule,
   ],
   controllers: [],
   providers: [],

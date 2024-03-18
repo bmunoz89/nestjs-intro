@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
+import { HttpStatus, ValidationPipe } from '@nestjs/common'
 import { getModelToken } from '@nestjs/mongoose'
+import { NestExpressApplication } from '@nestjs/platform-express'
 import { Test, TestingModule } from '@nestjs/testing'
 import { Types } from 'mongoose'
 import { AuthController } from 'src/auth/auth.controller'
@@ -8,7 +8,6 @@ import { AuthService } from 'src/auth/auth.service'
 import { SuccessAuthResponse } from 'src/auth/interfaces/auth-response.interface'
 import { UserNoPasswordLean } from 'src/users/interfaces/user-no-password-lean.interface'
 import { UserNoPasswordPrimitive } from 'src/users/interfaces/user-no-password-primitive.interface'
-// eslint-disable-next-line prettier/prettier
 import { User, UserSchemaModel } from 'src/users/schemas/user.schema'
 import { UsersService } from 'src/users/users.service'
 import request, { Response } from 'supertest'
@@ -25,7 +24,7 @@ const UserModelMock = UserSchemaModel as jest.MockedClass<
 >
 
 describe('AuthController (e2e)', () => {
-  let app: INestApplication
+  let app: NestExpressApplication
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -41,7 +40,7 @@ describe('AuthController (e2e)', () => {
       ],
     }).compile()
 
-    app = moduleFixture.createNestApplication()
+    app = moduleFixture.createNestApplication<NestExpressApplication>()
     app.setGlobalPrefix('api')
     app.useGlobalPipes(
       new ValidationPipe({

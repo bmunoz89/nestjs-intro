@@ -1,24 +1,19 @@
-import chalk from 'chalk'
-
-export enum TOKEN_TYPE {
-  Request,
-  Response,
-}
+import c from 'ansi-colors'
 
 export const MORGAN_FORMAT_STRING = {
   REQUEST: `:method :url :body HTTP/:http-version :user-agent :remote-addr`,
-  REQUEST_COLORED: chalk.white(
+  REQUEST_COLORED: c.white(
     [
-      chalk.cyan.bold(':method'),
-      chalk.yellow.bold.underline(':url'),
+      c.cyan.bold(':method'),
+      c.yellow.bold.underline(':url'),
       ':body',
-      chalk.gray('HTTP/:http-version :user-agent :remote-addr'),
+      c.gray('HTTP/:http-version :user-agent :remote-addr'),
     ].join(' '),
   ),
   RESPONSE: ':status - :res[content-length] bytes - :total-time[3] ms',
   RESPONSE_COLORED: [
-    chalk.bold(':status'),
-    chalk.gray(':res[content-length] bytes'),
-    chalk.yellow(':total-time[3] ms'),
-  ].join(chalk.gray(' - ')),
+    c.bold(':status'),
+    c.gray(':res[content-length] bytes'),
+    c.yellow(':total-time[3] ms'),
+  ].join(c.gray(' - ')),
 }

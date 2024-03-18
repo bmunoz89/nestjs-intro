@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2017",
+    "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
@@ -18,19 +18,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
-    "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true,
     "paths": {
-      "@libs/winston-logger": [
-        "libs/winston-logger/src"
-      ],
-      "@libs/winston-logger/*": [
-        "libs/winston-logger/src/*"
-      ]
+      "@libs/winston-logger": ["libs/winston-logger/src"],
+      "@libs/winston-logger/*": ["libs/winston-logger/src/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "exclude": ["node_modules", "dist"]
 }

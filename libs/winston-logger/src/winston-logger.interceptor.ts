@@ -6,7 +6,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common'
-import chalk from 'chalk'
+import c from 'ansi-colors'
 import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 
@@ -19,7 +19,7 @@ export class ResponseLoggingInterceptor implements NestInterceptor {
       tap({
         next: (value) => {
           this.logger.log(
-            `${chalk.cyan('Response')}: ${chalk.white(coloringObject(value))}`,
+            `${c.cyan('Response')}: ${c.white(coloringObject(value))}`,
             'response',
           )
         },

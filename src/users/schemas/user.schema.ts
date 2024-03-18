@@ -1,15 +1,13 @@
-import { Prop, Schema as DSchema, SchemaFactory } from '@nestjs/mongoose'
+import { Schema as DSchema, Prop, SchemaFactory } from '@nestjs/mongoose'
 import { compare, hash } from 'bcrypt'
 import {
+  CallbackWithoutResultAndOptionalError,
   Document,
-  HookNextFunction,
-  model,
   Model,
   Schema,
   Types,
+  model,
 } from 'mongoose'
-import type { UserPrimitive } from 'src/users/interfaces/user-primitive.interface'
-import type { SetOptional } from 'type-fest'
 
 const PASSWORD_SALT = 5
 
@@ -17,11 +15,10 @@ const PASSWORD_SALT = 5
   versionKey: false,
   timestamps: { createdAt: true, updatedAt: true },
   toJSON: {
-    transform: (
-      _doc: User,
-      plainObj: SetOptional<UserPrimitive, 'password'>,
-    ) => {
-      delete plainObj.password
+    transform(_doc, plainObj) {
+      if ('password' in plainObj) {
+        delete plainObj.password
+      }
       return plainObj
     },
   },
@@ -49,16 +46,18 @@ export class User extends Document {
   @Prop()
   updatedAt!: Date
 
-  public comparePassword!: (password: string) => Promise<boolean>
+  public comparePassword(password: string): Promise<boolean> {
+    return compare(password, this.password)
+  }
 }
 
 export const UserSchema: Schema<User> = SchemaFactory.createForClass(User)
 
 UserSchema.index({ username: 1, password: 1 })
 
-UserSchema.pre<User>(
+UserSchema.pre(
   'save',
-  async function (next: HookNextFunction): Promise<void> {
+  async function (next: CallbackWithoutResultAndOptionalError): Promise<void> {
     if (!this.isModified('password')) {
       next()
       return
@@ -68,11 +67,8 @@ UserSchema.pre<User>(
   },
 )
 
-UserSchema.methods.comparePassword = function (
-  password: string,
-): Promise<boolean> {
-  return compare(password, this.password)
-}
+// https://mongoosejs.com/docs/advanced_schemas.html
+UserSchema.loadClass(User)
 
 export const UserSchemaModel = model<User, Model<User>>(
   User.name,

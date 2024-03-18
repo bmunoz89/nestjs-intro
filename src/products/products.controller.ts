@@ -13,11 +13,9 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common'
+import { UpdateWriteOpResult } from 'mongoose'
 import { JWTAuthGuard } from 'src/auth/jwt-auth.guard'
-import {
-  DeleteQueryResult,
-  UpdateQueryResult,
-} from 'src/interfaces/mongo.interface'
+import { DeleteQueryResult } from 'src/interfaces/mongo.interface'
 import {
   ProductBodyDTO,
   ProductIdDTO,
@@ -34,9 +32,8 @@ export class ProductsController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() productBodyDTO: ProductBodyDTO): Promise<ProductLean> {
-    const product: ProductLean = await this.productsService.create(
-      productBodyDTO,
-    )
+    const product: ProductLean =
+      await this.productsService.create(productBodyDTO)
     return product
   }
 
@@ -63,11 +60,12 @@ export class ProductsController {
     @Param() productIdDTO: ProductIdDTO,
     @Body() productBodyDTO: ProductBodyDTO,
   ): Promise<void> {
-    const result: UpdateQueryResult = await this.productsService.update(
+    const result: UpdateWriteOpResult = await this.productsService.update(
       productIdDTO.id,
       productBodyDTO,
     )
-    if (result.ok && result.nModified === 0) throw new NotFoundException()
+    if (result.acknowledged && result.modifiedCount === 0)
+      throw new NotFoundException()
   }
 
   @UseGuards(JWTAuthGuard)
@@ -80,11 +78,10 @@ export class ProductsController {
     if (Object.keys(productBodyDTO).length === 0)
       throw new BadRequestException()
 
-    const result: UpdateQueryResult = await this.productsService.updatePartial(
-      productIdDTO.id,
-      productBodyDTO,
-    )
-    if (result.ok && result.nModified === 0) throw new NotFoundException()
+    const result: UpdateWriteOpResult =
+      await this.productsService.updatePartial(productIdDTO.id, productBodyDTO)
+    if (result.acknowledged && result.modifiedCount === 0)
+      throw new NotFoundException()
   }
 
   @UseGuards(JWTAuthGuard)
@@ -94,6 +91,7 @@ export class ProductsController {
     const result: DeleteQueryResult = await this.productsService.delete(
       productIdDTO.id,
     )
-    if (result.ok && result.deletedCount === 0) throw new NotFoundException()
+    if (result.acknowledged && result.deletedCount === 0)
+      throw new NotFoundException()
   }
 }

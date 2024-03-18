@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { LogLevel } from '@sentry/types'
 import { BaseConfigService } from 'src/config/config.service'
 import sentryConfig from 'src/config/sentry/sentry.config'
 
@@ -30,9 +29,9 @@ export class SentryConfigService extends BaseConfigService<
     return this.getString('dsn')
   }
 
-  get logLevel(): LogLevel | undefined {
-    return this.getNumberOrUndefined('logLevel')
-  }
+  // get logLevel(): SeverityLevel | undefined {
+  //   return this.getStringOrUndefined('logLevel') as SeverityLevel
+  // }
 
   /**
    * @default 1

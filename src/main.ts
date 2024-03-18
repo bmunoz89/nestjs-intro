@@ -27,8 +27,6 @@ import transports, {
 
 declare const module: any
 
-const isVite = process.env['VITE_USER_NODE_ENV'] === 'development'
-
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bodyParser: false,
@@ -93,21 +91,15 @@ async function bootstrap() {
         colors: appConfigService.loggerColor,
       }),
     )
-  // https://mongoosejs.com/docs/deprecations.html
-  mongooseSet('useNewUrlParser', true)
-  mongooseSet('useFindAndModify', false)
-  mongooseSet('useCreateIndex', true)
-  mongooseSet('useUnifiedTopology', true)
 
   app.setGlobalPrefix(appConfigService.prefix)
 
-  if (isVite === false)
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-      }),
-    )
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  )
 
   app.use(
     appendRequestIdToLogger(globalLogger, {
@@ -152,8 +144,6 @@ async function bootstrap() {
 
   app.disable('x-powered-by')
 
-  if (isVite) return app
-
   const port = appConfigService.port
   await app.listen(port)
   const logger = new Logger('Main')
@@ -169,4 +159,5 @@ async function bootstrap() {
   return app
 }
 
-export const createViteNodeApp = bootstrap()
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+bootstrap()

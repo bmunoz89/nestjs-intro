@@ -1,20 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { TOKEN_TYPE } from '@libs/winston-logger/morgan/morgan.constants'
 import { coloringObject } from '@libs/winston-logger/winston-logger.utils'
-import chalk from 'chalk'
-import { Request, Response } from 'express'
+import c from 'ansi-colors'
+import { Request } from 'express'
 import morgan from 'morgan'
-
-export const appendMorganToken = (
-  token: string,
-  tokenType: TOKEN_TYPE,
-  morganToken: string,
-) =>
-  morgan.token(morganToken, (req: Request, res: Response) => {
-    if (tokenType === TOKEN_TYPE.Request) return req[token]
-    else return res[token]
-  })
 
 export interface AppendBodyTokenOptions {
   /**
@@ -32,7 +19,7 @@ export const appendBodyToken = ({
     parse = (body) => {
       const formattedBody = coloringObject(body)
 
-      return chalk.white(formattedBody)
+      return c.white(formattedBody)
     }
   } else {
     parse = (body) => JSON.stringify(body)

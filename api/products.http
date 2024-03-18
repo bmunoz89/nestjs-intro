@@ -1,0 +1,22 @@
+### GET ALL
+GET {{host}}/products
+Authorization: Bearer {{token}}
+
+### GET ONE
+GET {{host}}/products/66033f19f4dccc08cea2f412
+Authorization: Bearer {{token}}
+
+### CREATE ONE
+POST {{host}}/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "product 1",
+  "description": "test description test description test description",
+  "price": 10
+}
+
+### DELETE ONE
+DELETE {{host}}/products/66034127e8ae1428a7a85ace
+Authorization: Bearer {{token}}

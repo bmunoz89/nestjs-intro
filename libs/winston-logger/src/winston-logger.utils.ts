@@ -1,4 +1,4 @@
-import chalk from 'chalk'
+import c from 'ansi-colors'
 import * as util from 'util'
 import { WinstonLoggerService } from './winston-logger.service'
 
@@ -12,7 +12,6 @@ export interface MongooseLoggerOptions {
 export type ColoringObjectOptions = util.InspectOptions
 
 export const coloringObject = (
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   object: any,
   options: ColoringObjectOptions = {},
 ): string => {
@@ -47,13 +46,13 @@ export const mongooseLogger =
     }
 
     logger.debug(
-      chalk.white(
-        chalk.blue('Mongoose: ') +
-          chalk.white(collectionName + '.') +
-          chalk.green(methodName) +
-          chalk.cyan('(') +
+      c.white(
+        c.blue('Mongoose: ') +
+          c.white(collectionName + '.') +
+          c.green(methodName) +
+          c.cyan('(') +
           methodArgsPrettified +
-          chalk.cyan(')'),
+          c.cyan(')'),
       ),
       'mongoose',
     )

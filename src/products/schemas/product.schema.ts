@@ -1,4 +1,4 @@
-import { Prop, Schema as DSchema, SchemaFactory } from '@nestjs/mongoose'
+import { Schema as DSchema, Prop, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Schema, Types } from 'mongoose'
 
 @DSchema({
@@ -34,3 +34,6 @@ export class Product extends Document {
 
 export const ProductSchema: Schema<Product> =
   SchemaFactory.createForClass(Product)
+
+// https://mongoosejs.com/docs/advanced_schemas.html
+ProductSchema.loadClass(Product)

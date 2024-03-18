@@ -49,9 +49,8 @@ export class AuthController {
   async register(
     @Body() authRegisterBodyDTO: AuthRegisterBodyDTO,
   ): Promise<SuccessAuthResponse> {
-    const user: UserNoPassword = await this.usersService.register(
-      authRegisterBodyDTO,
-    )
+    const user: UserNoPassword =
+      await this.usersService.register(authRegisterBodyDTO)
     const accessToken: string = this.authService.signPayload({
       _id: user._id.toHexString(),
       username: user.username,

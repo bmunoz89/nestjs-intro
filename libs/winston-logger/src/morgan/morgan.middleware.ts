@@ -26,20 +26,30 @@ export const morganResponseLogger = (
     stream: {
       write: (message: string) => logger.log(message, 'response'),
     },
-    skip: (_req, res) => res.statusCode >= HttpStatus.BAD_REQUEST,
+    skip: (_req, res) => {
+      const code = res.statusCode as HttpStatus
+      return code >= HttpStatus.BAD_REQUEST
+    },
   }),
   morgan(morganFormatString, {
     stream: {
       write: (message: string) => logger.warn(message, 'response'),
     },
-    skip: (_req, res) =>
-      res.statusCode < HttpStatus.BAD_REQUEST ||
-      res.statusCode >= HttpStatus.INTERNAL_SERVER_ERROR,
+    skip: (_req, res) => {
+      const code = res.statusCode as HttpStatus
+      return (
+        code < HttpStatus.BAD_REQUEST ||
+        code >= HttpStatus.INTERNAL_SERVER_ERROR
+      )
+    },
   }),
   morgan(morganFormatString, {
     stream: {
       write: (message: string) => logger.error(message, 'response'),
     },
-    skip: (_req, res) => res.statusCode < HttpStatus.INTERNAL_SERVER_ERROR,
+    skip: (_req, res) => {
+      const code = res.statusCode as HttpStatus
+      return code < HttpStatus.INTERNAL_SERVER_ERROR
+    },
   }),
 ]

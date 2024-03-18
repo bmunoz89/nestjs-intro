@@ -1,9 +1,9 @@
-import { Inject, Injectable, Logger, Scope } from '@nestjs/common'
-import { createLogger, Logger as WinstonLogger, LoggerOptions } from 'winston'
+import { ConsoleLogger, Inject, Injectable, Scope } from '@nestjs/common'
+import { LoggerOptions, Logger as WinstonLogger, createLogger } from 'winston'
 import { NESTJS_WINSTON_CONFIG_OPTIONS } from './winston-logger.constants'
 
 @Injectable({ scope: Scope.TRANSIENT })
-export class WinstonLoggerService extends Logger {
+export class WinstonLoggerService extends ConsoleLogger {
   private logger: WinstonLogger
 
   constructor(@Inject(NESTJS_WINSTON_CONFIG_OPTIONS) config: LoggerOptions) {

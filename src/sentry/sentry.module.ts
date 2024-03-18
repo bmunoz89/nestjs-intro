@@ -23,7 +23,7 @@ export class SentryModule implements OnModuleInit, OnModuleDestroy {
       debug: this.sentryConfigService.debug,
       environment: this.appConfigService.nodeEnv,
       dsn: this.sentryConfigService.dsn,
-      logLevel: this.sentryConfigService.logLevel,
+      // logLevel: this.sentryConfigService.logLevel,
       sampleRate: this.sentryConfigService.sampleRate,
       maxBreadcrumbs: this.sentryConfigService.maxBreadcrumbs,
       attachStacktrace: true,
@@ -32,7 +32,7 @@ export class SentryModule implements OnModuleInit, OnModuleDestroy {
 
         if (hint.originalException instanceof Error)
           this.logger.error(hint.originalException, 'sentry')
-        else if ((hint.originalException as unknown) instanceof Promise)
+        else if (hint.originalException instanceof Promise)
           this.logger.error('Unhandled rejection', 'sentry')
         else
           this.logger.error(
