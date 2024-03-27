@@ -41,3 +41,6 @@ lerna-debug.log*
 
 # @compodoc/compodoc
 /documentation
+
+# NestJS
+.nestjs_repl_history
