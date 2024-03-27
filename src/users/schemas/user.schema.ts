@@ -22,6 +22,14 @@ const PASSWORD_SALT = 5
       return plainObj
     },
   },
+  toObject: {
+    transform(_doc, plainObj) {
+      if ('password' in plainObj) {
+        delete plainObj.password
+      }
+      return plainObj
+    },
+  },
 })
 export class User extends Document {
   _id!: Types.ObjectId
