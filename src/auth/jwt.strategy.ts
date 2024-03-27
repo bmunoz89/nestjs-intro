@@ -3,18 +3,18 @@ import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt'
 import { AuthService } from 'src/auth/auth.service'
 import { AuthJWTPayload } from 'src/auth/dto/auth.dto'
-import { AuthConfigService } from 'src/config/auth/auth.config.service'
+import { EnvService } from 'src/env/env.service'
 import { UserNoPassword } from 'src/users/interfaces/user-no-password.interface'
 
 @Injectable()
 export class JWTStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly authService: AuthService,
-    readonly authConfigService: AuthConfigService,
+    readonly envService: EnvService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: authConfigService.jwtSecret,
+      secretOrKey: envService.get('AUTH_JWT_SECRET'),
     } as StrategyOptions)
   }
 

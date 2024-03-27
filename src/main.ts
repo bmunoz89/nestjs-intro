@@ -16,9 +16,8 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { json } from 'body-parser'
 import { set as mongooseSet } from 'mongoose'
 import { AppModule } from 'src/app.module'
-import { Environment } from 'src/config/app/app.config.schema'
-import { AppConfigService } from 'src/config/app/app.config.service'
-import { MongoConfigService } from 'src/config/database/mongo/mongo.config.service'
+import { NodeEnv } from 'src/env/env'
+import { EnvService } from 'src/env/env.service'
 import { format } from 'winston'
 import transports, {
   ConsoleTransportInstance,
@@ -32,14 +31,13 @@ async function bootstrap() {
     bodyParser: false,
   })
   app.use(json())
-  const appConfigService = app.get(AppConfigService)
-  const mongoConfigService = app.get(MongoConfigService)
+  const envService = app.get(EnvService)
 
   const winstonTransports: Array<
     ConsoleTransportInstance | FileTransportInstance
   > = []
 
-  if (appConfigService.loggerColor) {
+  if (envService.get('APP_LOGGER_COLOR')) {
     winstonTransports.push(
       new transports.File({
         format: format.combine(format.uncolorize(), format.json()),
@@ -66,7 +64,7 @@ async function bootstrap() {
       }),
     )
 
-    if (appConfigService.nodeEnv !== Environment.production)
+    if (envService.get('NODE_ENV') !== NodeEnv.production)
       winstonTransports.push(
         new transports.Console({
           format: format.combine(
@@ -80,19 +78,19 @@ async function bootstrap() {
   }
 
   const globalLogger = new WinstonLoggerService({
-    silent: appConfigService.logger === false,
+    silent: envService.get('APP_LOGGER') === false,
     transports: winstonTransports,
   })
 
-  if (mongoConfigService.debug)
+  if (envService.get('DATABASE_MONGO_DEBUG'))
     mongooseSet(
       'debug',
       mongooseLogger(globalLogger, {
-        colors: appConfigService.loggerColor,
+        colors: envService.get('APP_LOGGER_COLOR'),
       }),
     )
 
-  app.setGlobalPrefix(appConfigService.prefix)
+  app.setGlobalPrefix(envService.get('APP_PREFIX'))
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -120,13 +118,13 @@ async function bootstrap() {
   )
 
   appendBodyToken({
-    colors: appConfigService.loggerColor,
+    colors: envService.get('APP_LOGGER_COLOR'),
   })
 
   app.use(
     morganRequestLogger(
       globalLogger,
-      appConfigService.loggerColor
+      envService.get('APP_LOGGER_COLOR')
         ? MORGAN_FORMAT_STRING.REQUEST_COLORED
         : MORGAN_FORMAT_STRING.REQUEST,
     ),
@@ -134,7 +132,7 @@ async function bootstrap() {
   app.use(
     morganResponseLogger(
       globalLogger,
-      appConfigService.loggerColor
+      envService.get('APP_LOGGER_COLOR')
         ? MORGAN_FORMAT_STRING.RESPONSE_COLORED
         : MORGAN_FORMAT_STRING.RESPONSE,
     ),
@@ -144,7 +142,7 @@ async function bootstrap() {
 
   app.disable('x-powered-by')
 
-  const port = appConfigService.port
+  const port = envService.get('APP_PORT')
   await app.listen(port)
   const logger = new Logger('Main')
   logger.log(`Server listening on port ${port}`)
