@@ -10,6 +10,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/winston-logger/tsconfig.lib.json"
       }
+    },
+    "zod": {
+      "type": "library",
+      "root": "libs/zod",
+      "entryFile": "index",
+      "sourceRoot": "libs/zod/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/zod/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {

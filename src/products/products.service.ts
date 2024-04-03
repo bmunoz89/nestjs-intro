@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model, UpdateWriteOpResult } from 'mongoose'
-import { DeleteQueryResult } from 'src/interfaces/mongo.interface'
+import { DeleteQueryResult } from 'src/app/interfaces/mongo.interface'
 import {
   ProductBodyDTO,
   ProductIdDTO,

@@ -1,21 +1,17 @@
 {
-  "moduleFileExtensions": [
-    "js",
-    "json",
-    "ts"
-  ],
+  "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": "../",
   "modulePaths": ["<rootDir>"],
   "testEnvironment": "node",
-  "roots": [
-    "<rootDir>"
-  ],
+  "roots": ["<rootDir>"],
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "@app/winston-logger/(.*)": "<rootDir>/../libs/winston-logger/src/$1",
-    "@app/winston-logger": "<rootDir>/../libs/winston-logger/src"
+    "@libs/winston-logger/(.*)": "<rootDir>/../libs/winston-logger/src/$1",
+    "@libs/winston-logger": "<rootDir>/../libs/winston-logger/src",
+    "@libs/zod/(.*)": "<rootDir>/../libs/zod/src/$1",
+    "@libs/zod": "<rootDir>/../libs/zod/src"
   }
 }

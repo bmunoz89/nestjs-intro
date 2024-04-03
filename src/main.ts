@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { appendBodyToken } from '@libs/winston-logger/morgan/morgan.config'
-import { MORGAN_FORMAT_STRING } from '@libs/winston-logger/morgan/morgan.constants'
 import {
+  MORGAN_FORMAT_STRING,
+  ResponseLoggingInterceptor,
+  WinstonLoggerService,
+  appendBodyToken,
+  appendRequestIdToLogger,
+  mongooseLogger,
   morganRequestLogger,
   morganResponseLogger,
-} from '@libs/winston-logger/morgan/morgan.middleware'
-import { ResponseLoggingInterceptor } from '@libs/winston-logger/winston-logger.interceptor'
-import { appendRequestIdToLogger } from '@libs/winston-logger/winston-logger.middleware'
-import { WinstonLoggerService } from '@libs/winston-logger/winston-logger.service'
-import { mongooseLogger } from '@libs/winston-logger/winston-logger.utils'
+} from '@libs/winston-logger'
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
+import { MicroserviceOptions } from '@nestjs/microservices'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { json } from 'body-parser'
 import { set as mongooseSet } from 'mongoose'
-import { AppModule } from 'src/app.module'
+import { AppModule } from 'src/app/app.module'
 import { NodeEnv } from 'src/env/env'
 import { EnvService } from 'src/env/env.service'
 import { format } from 'winston'
@@ -32,6 +33,7 @@ async function bootstrap() {
   })
   app.use(json())
   const envService = app.get(EnvService)
+  app.connectMicroservice<MicroserviceOptions>(envService.productMicroservice)
 
   const winstonTransports: Array<
     ConsoleTransportInstance | FileTransportInstance
@@ -142,6 +144,7 @@ async function bootstrap() {
 
   app.disable('x-powered-by')
 
+  await app.startAllMicroservices()
   const port = envService.get('APP_PORT')
   await app.listen(port)
   const logger = new Logger('Main')
@@ -157,5 +160,4 @@ async function bootstrap() {
   return app
 }
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-bootstrap()
+void bootstrap()

@@ -13,9 +13,10 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common'
+import { MessagePattern, Payload } from '@nestjs/microservices'
 import { UpdateWriteOpResult } from 'mongoose'
+import { DeleteQueryResult } from 'src/app/interfaces/mongo.interface'
 import { JWTAuthGuard } from 'src/auth/jwt-auth.guard'
-import { DeleteQueryResult } from 'src/interfaces/mongo.interface'
 import {
   ProductBodyDTO,
   ProductIdDTO,
@@ -93,5 +94,11 @@ export class ProductsController {
     )
     if (result.acknowledged && result.deletedCount === 0)
       throw new NotFoundException()
+  }
+
+  @MessagePattern('product.sum')
+  mathSum(@Payload() data: number[]): number {
+    console.log('data 1 :>> ', data)
+    return (data || []).reduce((a, b) => a + b, 0)
   }
 }

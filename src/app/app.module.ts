@@ -1,6 +1,7 @@
-import { WinstonLoggerModule } from '@libs/winston-logger/winston-logger.module'
+import { WinstonLoggerModule } from '@libs/winston-logger'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { ClientsModule } from '@nestjs/microservices'
 import { MongooseModule } from '@nestjs/mongoose'
 import { AuthModule } from 'src/auth/auth.module'
 import { envSchema } from 'src/env/env'
@@ -23,6 +24,17 @@ import { UsersModule } from 'src/users/users.module'
         autoIndex: envService.get('DATABASE_MONGO_AUTO_INDEX'),
       }),
       inject: [EnvService],
+    }),
+    ClientsModule.registerAsync({
+      clients: [
+        {
+          name: 'PRODUCT_MICROSERVICE',
+          useFactory: (envService: EnvService) =>
+            envService.productMicroservice,
+          inject: [EnvService],
+        },
+      ],
+      isGlobal: true,
     }),
     SentryModule,
     WinstonLoggerModule,

@@ -21,7 +21,9 @@
     "skipLibCheck": true,
     "paths": {
       "@libs/winston-logger": ["libs/winston-logger/src"],
-      "@libs/winston-logger/*": ["libs/winston-logger/src/*"]
+      "@libs/winston-logger/*": ["libs/winston-logger/src/*"],
+      "@libs/zod": ["libs/zod/src"],
+      "@libs/zod/*": ["libs/zod/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]
