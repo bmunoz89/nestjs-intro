@@ -17,8 +17,8 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { json } from 'body-parser'
 import { set as mongooseSet } from 'mongoose'
 import { AppModule } from 'src/app/app.module'
-import { NodeEnv } from 'src/env/env'
-import { EnvService } from 'src/env/env.service'
+import { NodeEnv } from 'src/modules/env/env.schema'
+import { EnvService } from 'src/modules/env/env.service'
 import { format } from 'winston'
 import transports, {
   ConsoleTransportInstance,
